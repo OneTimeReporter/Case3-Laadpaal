@@ -65,7 +65,7 @@ m = folium.Map(location=[52.379189, 4.899431], zoom_start=10)
 
 # Add markers for each charging station
 for index, row in opencharge.iterrows():
-    folium.Marker([row['AddressInfo.Latitude'], row['AddressInfo.Longitude']]).add_to(m)
+    folium.Marker([row['Latitude'], row['Longitude']]).add_to(m)
 
 # Display the map
 st.map = st_folium(m, width=1000)
