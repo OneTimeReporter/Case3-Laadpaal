@@ -75,9 +75,9 @@ for index, row in opencharge.iterrows():
 st.map = st_folium(m, width=1000)
 
 client = Socrata("opendata.rdw.nl", None)
-results = client.get("w4rt-e856", limit=450000)
+results = client.get("w4rt-e856", limit=450)
 client2 = Socrata("opendata.rdw.nl", None)
-results2 = client2.get("vsxf-rq7p", limit=16000000)
+results2 = client2.get("vsxf-rq7p", limit=16000)
 
 df_results = pd.DataFrame(results)
 st.write(df_results)
@@ -86,14 +86,12 @@ st.write(df_results_2)
 
 # Voer de merge-operatie uit op basis van de kolom "kenteken"
 st.write("De initiele dataset wordt gejoint met brandstoftype data behaalt van de website van de rdw.")
+
 st.code('''
-client2 = Socrata("opendata.rdw.nl", None)
-results2 = client2.get("vsxf-rq7p", limit=16000000)
-df_results_2 = pd.DataFrame(results2)
-st.write(df_results_2)
 merged_df = pd.merge(df_ev_2022, df_results_2, on='kenteken', how='inner')
 ''')
-
+brandstofinladen = pd.read_csv("pages/brandstoftypedata.csv")
+df_results_2 = pd.DataFrame(brandstofinladen)
 merged_df = pd.merge(df_ev_2022, df_results_2, on='kenteken', how='inner')
 
 # 'inner' betekent dat alleen de gemeenschappelijke rijen worden opgenomen
