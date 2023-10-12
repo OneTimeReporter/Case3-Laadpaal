@@ -17,11 +17,15 @@ laadpaalDf['Ended'] = pd.to_datetime(laadpaalDf['Ended'], errors='coerce', forma
 st.write("We beginnen met het inladen van de dataset door het aan te roepen van 'laadpaaldata.csv'. ")
 st.write("De kolom 'Efficiency' wordt aangemaakt door 'Chargetime' te delen met 'ConnectedTime'. ")
 
-st.write("De datatypes en algemene informatie van de dataset. De tijdskolommen zijn in uren, en de eenheid van energie gebruikt is kWh.")
+st.header("dtypes")
+st.write("De datatypes en algemene informatie van de dataset.")
 st.write(laadpaalDf.dtypes)
 st.divider()
+st.header("describe")
+st.write("De tijdskolommen zijn in uren, en de eenheid van energie gebruikt is kWh.")
 st.write(laadpaalDf.describe())
-st.divider()
+st.divider() 
+st.header("Overzicht dataset")
 st.write(laadpaalDf)
 
 
