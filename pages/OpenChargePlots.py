@@ -4,7 +4,7 @@ import numpy as np
 import streamlit as st
 import folium
 from folium.plugins import HeatMap
-
+from streamlit_folium import st_folium
 
 st.title("Laadpalen op een kaart")
 
@@ -115,4 +115,4 @@ heatmap_layer = HeatMap(coordinates, radius=15)
 heatmap_layer.add_to(map_df)
 
 # Display the map in Streamlit
-st.map(map_df._repr_html_(), unsafe_allow_html=True)
+st.map = st_folium(map_df._repr_html_(), unsafe_allow_html=True)
