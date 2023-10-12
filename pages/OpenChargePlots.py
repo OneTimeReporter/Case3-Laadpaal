@@ -77,11 +77,10 @@ def clean_usage_cost(value):
 
 # Apply the custom function to the "UsageCost" column
 df["UsageCost"] = df["UsageCost"].apply(clean_usage_cost)
-
-
-
-st.write(df['UsageCost'].dtype)
+st.divider()
+st.write("De dataframe na het opschonen")
 st.write(df)
+st.write("En de aantal nan waardes na het opschonen")
 st.write(df.isna().sum())
 
 st.write("Aantal kolommen worden hernoemt om leesbaarheid en bruikbaarheid te verbeteren")
@@ -97,7 +96,6 @@ df.rename(columns={"AddressInfo.StateOrProvince": "Province"}, inplace=True)
 df.rename(columns={"AddressInfo.Postcode": "postcode"}, inplace=True)
 
 
-st.divider()
 st.header("Laadpalen heatmap over heel Nederland")
 st.write("Met behulp van Folium, hebben wij een heatmap geplot van de laadpaaldichtheid over heel Nederland")
 st.write("Zoals te zien is, zitten de meeste laadpalen in de Randstad.")
@@ -115,4 +113,4 @@ heatmap_layer = HeatMap(coordinates, radius=15)
 heatmap_layer.add_to(map_df)
 
 # Display the map in Streamlit
-st.map = st_folium(map_df)
+st.map = st_folium(map_df,width=750)
