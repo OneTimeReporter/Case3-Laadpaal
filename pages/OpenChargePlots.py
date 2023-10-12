@@ -102,7 +102,6 @@ st.write("Met behulp van Folium, hebben wij een heatmap geplot van de laadpaaldi
 st.write("Zoals te zien is, zitten de meeste laadpalen in de Randstad.")
 st.write("Als Nederland voor 2030 volledig elektrisch wilt zijn, zullen er meer laadpalen moeten geinstalleerd worden in de lichter gekleurde gebieden om de minder gepopuleerde delen van Nederland te servicen.")
 
-# Create a map
 map_df = folium.Map(location=[52.3702, 4.8952], zoom_start=8)
 
 # Create a list of coordinates from the DataFrame
@@ -114,6 +113,5 @@ heatmap_layer = HeatMap(coordinates, radius=15)
 # Add the HeatMap layer to the map
 heatmap_layer.add_to(map_df)
 
-# Display the map
-st.write(map_df)
-
+# Display the map in Streamlit
+st.write(map_df._repr_html_(), unsafe_allow_html=True)
