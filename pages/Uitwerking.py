@@ -28,7 +28,7 @@ fig = px.bar(sorted_merk_counts, x='Merk', y='Aantal',
 fig.update_xaxes(tickangle=90, tickmode='array', tickvals=sorted_merk_counts['Merk'])
 
 # Toon het histogram
-st.plotlychart(st.plotly_chart(fig, use_container_width=True))
+st.plotly_chart(fig, use_container_width=True)
 
 
 # Vooral Tesla, Peugeot, Volkswagen en Kia zijn populaire merken onder de elektrische automobilist.
