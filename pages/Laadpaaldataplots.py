@@ -31,18 +31,14 @@ st.header("Overzicht dataset")
 st.write(laadpaalDf)
 st.divider()
 
-plt.hist(laadpaalDf[['ConnectedTime']['ChargeTime']], bins=10, range=(0, 10), color='skyblue', edgecolor='black')
-plt.xlabel('Laadtijd (Uren)')
+plt.hist(laadpaalDf['ChargeTime'], bins=10, range=(0, 10), color='skyblue', edgecolor='black', label = "Charge Time")
+plt.hist(laadpaalDf['ConnectedTime'], bins=10, range=(0, 10), color='skyblue', edgecolor='black', label = "Connected Time")
+plt.xlabel('Tijd (Uren)')
 plt.ylabel('Waarnemingen')
+plt.legend(loc='upper right')
 plt.title('Verdeling van Laadtijd')
 
 st.write("Een histogram dat de verdeling van de laadtijden in de dataset laat zien. Er is duidelijk te zien dat de meeste mensen een laadpaal laden voor een tijd tussen de 0 en 4 uur.")
-st.pyplot()
-
-plt.hist(laadpaalDf['ConnectedTime'], bins=10, range=(0, 10), color='skyblue', edgecolor='black')
-plt.xlabel('Aansluitingstijd (Uren)')
-plt.ylabel('Waarnemingen')
-plt.title('Verdeling van aansluitingstijd')
 st.pyplot()
 
 # Calculate the z-score for the ConnectedTime column
