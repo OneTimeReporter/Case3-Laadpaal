@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import streamlit as st
 
+st.set_option('deprecation.showPyplotGlobalUse', False)
+
 st.title("Laadpaal dataverkenning")
 inladen = pd.read_csv('pages/laadpaaldata.csv')
 laadpaalDf = pd.DataFrame(inladen)
@@ -27,12 +29,20 @@ st.write(laadpaalDf.describe())
 st.divider() 
 st.header("Overzicht dataset")
 st.write(laadpaalDf)
-
+st.divider()
 
 plt.hist(laadpaalDf['ChargeTime'], bins=10, range=(0, 10), color='skyblue', edgecolor='black')
 plt.xlabel('Laadtijd (Uren)')
 plt.ylabel('Waarnemingen')
 plt.title('Verdeling van Laadtijd')
+
+st.write("Een histogram dat de verdeling van de laadtijden in de dataset laat zien. Er is duidelijk te zien dat de meeste mensen een laadpaal laden voor een tijd tussen de 0 en 4 uur.")
+st.pyplot()
+
+plt.hist(laadpaalDf['ConnectedTime'], bins=10, range=(0, 10), color='skyblue', edgecolor='black')
+plt.xlabel('Aansluitingstijd (Uren)')
+plt.ylabel('Waarnemingen')
+plt.title('Verdeling van aansluitingstijd')
 st.pyplot()
 
 # Calculate the z-score for the ConnectedTime column
@@ -45,8 +55,6 @@ laadpaalDf = laadpaalDf[z_scores <= outlier_threshold]
 # Drop rows where the Efficiency column is equal to 0
 laadpaalDf = laadpaalDf[laadpaalDf['Efficiency'] != 0]
 
-import numpy as np
-import matplotlib.pyplot as plt
 
 # Sort the data by ConnectedTime
 sorted_data = laadpaalDf.sort_values('ConnectedTime')
