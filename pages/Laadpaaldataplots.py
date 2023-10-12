@@ -7,7 +7,7 @@ import streamlit as st
 
 st.title("Laadpaal dataverkenning")
 inladen = pd.read_csv('pages/laadpaaldata.csv')
-laadpaalDf = pd.Dataframe(inladen)
+laadpaalDf = pd.DataFrame(inladen)
 laadpaalDf['Efficiency'] = laadpaalDf['ChargeTime'] / laadpaalDf['ConnectedTime'] * 100
 laadpaalDf = laadpaalDf[laadpaalDf['ChargeTime'] >= 0]
 
