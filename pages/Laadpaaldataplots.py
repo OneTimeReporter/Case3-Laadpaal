@@ -4,9 +4,14 @@ import datetime as dt
 import matplotlib.pyplot as plt
 import numpy as np
 
-laadpaalDf = pd.read_csv('pages/laadpaaldata.csv')
+st.title("Laadpaal dataverkenning")
+inladen = pd.read_csv('pages/laadpaaldata.csv')
+laadpaalDf = pd.Dataframe(inladen)
 laadpaalDf['Efficiency'] = laadpaalDf['ChargeTime'] / laadpaalDf['ConnectedTime'] * 100
 laadpaalDf = laadpaalDf[laadpaalDf['ChargeTime'] >= 0]
+
+st.text("We beginnen met het inladen van de dataset door het aan te roepen van 'laadpaaldata.csv'. ")
+st.text("De kolom 'Efficiency' wordt aangemaakt door 'Chargetime' te delen met 'ConnectedTime'. ")
 
 laadpaalDf.dtypes
 
