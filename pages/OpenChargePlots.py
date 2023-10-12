@@ -101,4 +101,4 @@ heatmap_layer = HeatMap(coordinates, radius=15)
 heatmap_layer.add_to(map_df)
 
 # Display the map in Streamlit
-st.map = st_folium(map_df,width=1100, length=1100)
+st.map = st_folium(map_df,width=1100)
