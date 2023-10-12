@@ -31,7 +31,7 @@ st.header("Overzicht dataset")
 st.write(laadpaalDf)
 st.divider()
 
-plt.hist(laadpaalDf['ChargeTime'], bins=10, range=(0, 10), color='skyblue', edgecolor='black')
+plt.hist(laadpaalDf[['ConnectedTime']['ChargeTime']], bins=10, range=(0, 10), color='skyblue', edgecolor='black')
 plt.xlabel('Laadtijd (Uren)')
 plt.ylabel('Waarnemingen')
 plt.title('Verdeling van Laadtijd')
