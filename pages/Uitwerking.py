@@ -43,7 +43,7 @@ df_ev_2022['catalogusprijs'].mean()
 st.write("De gemiddelde prijs van een elektrische auto is 52929 euro.")
 st.divider()
 
-inladen = pd.read_csv(pages/opencharge.csv)
+inladen = pd.read_csv('pages/opencharge.csv')
 opencharge = pd.DataFrame(inladen)
 
 st.write(opencharge.index)
