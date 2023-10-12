@@ -14,7 +14,7 @@ laadpaalDf = laadpaalDf[laadpaalDf['ChargeTime'] >= 0]
 st.write("We beginnen met het inladen van de dataset door het aan te roepen van 'laadpaaldata.csv'. ")
 st.write("De kolom 'Efficiency' wordt aangemaakt door 'Chargetime' te delen met 'ConnectedTime'. ")
 
-laadpaalDf.dtypes
+st.write(laadpaalDf.dtypes)
 
 laadpaalDf.describe()
 
