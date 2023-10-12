@@ -36,11 +36,12 @@ plt.hist(laadpaalDf['ConnectedTime'], bins=10, range=(0, 10), color='orange', ed
 plt.xlabel('Tijd (Uren)')
 plt.ylabel('Waarnemingen')
 plt.legend(loc='upper right')
-plt.title('Verdeling van Laadtijd')
+plt.title('Verdeling van Laadtijd en Aansluitingstijd')
 
-st.write("Een histogram dat de verdeling van de laadtijden in de dataset laat zien. Er is duidelijk te zien dat de meeste mensen een laadpaal laden voor een tijd tussen de 0 en 4 uur.")
+st.write("Een histogram dat de verdeling van de laadtijden en aansluitingstijden in de dataset laat zien. Er is duidelijk te zien dat de meeste mensen een laadpaal laden voor een tijd tussen de 0 en 4 uur.")
+st.write("Er is te zien dat de Connectedtime niet dezelfde grote piek heeft tussen 0-4 uur dan de Chargetime, dit laat ons zien dat er veel gevallen zijn waar auto's nog aangesloten zitten nadat ze al volledig opgeladen zijn.")
 st.pyplot()
-
+st.divider()
 # Calculate the z-score for the ConnectedTime column
 z_scores = (laadpaalDf['ConnectedTime'] - laadpaalDf['ConnectedTime'].mean()) / laadpaalDf['ConnectedTime'].std()
 # Define a threshold for outliers (e.g., z-score > 3)
@@ -70,4 +71,6 @@ plt.colorbar(label='ConnectedTime')
 plt.plot(sorted_data['ConnectedTime'], trend_line(sorted_data['ConnectedTime']), color='red')
 
 plt.ylim(0)  # Set the Y axis lower limit to 0
+st.write("Een scatterplot tussen de aansluitingstijd en efficiency, de stijlheid van de negatieve lineare trendlijn laat zien dat des te langer een auto aan het opladen is, de verhouding tussen aansluitingstijd en oplaadtijd verslechterd.")
+st.write("Dit laat zien dat auto's vaak langer opladen dan nodig is. De efficiency van de laadpalen zou verbeterd kunnen worden door een systeem te implementeren waar laadpalen beschikbaar worden zodra een aangesloten auto opgeladen is.")
 st.pyplot()
