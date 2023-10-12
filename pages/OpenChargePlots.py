@@ -4,7 +4,7 @@ import numpy as np
 import streamlit as st
 import folium
 from folium.plugins import HeatMap
-from streamlit_folium import st_folium
+
 
 st.title("Laadpalen op een kaart")
 
