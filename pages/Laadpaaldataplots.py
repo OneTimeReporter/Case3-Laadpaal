@@ -11,8 +11,8 @@ laadpaalDf = pd.DataFrame(inladen)
 laadpaalDf['Efficiency'] = laadpaalDf['ChargeTime'] / laadpaalDf['ConnectedTime'] * 100
 laadpaalDf = laadpaalDf[laadpaalDf['ChargeTime'] >= 0]
 
-st.text("We beginnen met het inladen van de dataset door het aan te roepen van 'laadpaaldata.csv'. ")
-st.text("De kolom 'Efficiency' wordt aangemaakt door 'Chargetime' te delen met 'ConnectedTime'. ")
+st.write("We beginnen met het inladen van de dataset door het aan te roepen van 'laadpaaldata.csv'. ")
+st.write("De kolom 'Efficiency' wordt aangemaakt door 'Chargetime' te delen met 'ConnectedTime'. ")
 
 laadpaalDf.dtypes
 
