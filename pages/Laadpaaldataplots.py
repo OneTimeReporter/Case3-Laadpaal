@@ -3,6 +3,7 @@ import plotly.express as px
 import datetime as dt
 import matplotlib.pyplot as plt
 import numpy as np
+import streamlit as st
 
 st.title("Laadpaal dataverkenning")
 inladen = pd.read_csv('pages/laadpaaldata.csv')
