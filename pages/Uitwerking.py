@@ -167,35 +167,35 @@ cleaned_df = cleaned_df[z_scores <= 3]
 
 
 # Maak een scatter plot om de relatie tussen massa_rijklaar en catalogusprijs te verkennen
-plt.figure(figsize=(10, 6))
-sns.scatterplot(x='massa_rijklaar', y='catalogusprijs', hue='inrichting', alpha=0.5, data=cleaned_df)
-plt.plot([cleaned_df['massa_rijklaar'].min(), cleaned_df['massa_rijklaar'].max()], [cleaned_df['catalogusprijs'].mean(), cleaned_df['catalogusprijs'].mean()], color='red', linestyle='--')
+#plt.figure(figsize=(10, 6))
+#sns.scatterplot(x='massa_rijklaar', y='catalogusprijs', hue='inrichting', alpha=0.5, data=cleaned_df)
+#plt.plot([cleaned_df['massa_rijklaar'].min(), cleaned_df['massa_rijklaar'].max()], [cleaned_df['catalogusprijs'].mean(), cleaned_df['catalogusprijs'].mean()], color='red', linestyle='--')
 
 # Fit a linear regression line to the scatter plot
-sns.regplot(x='massa_rijklaar', y='catalogusprijs', data=cleaned_df, scatter=False, color='blue')
+#sns.regplot(x='massa_rijklaar', y='catalogusprijs', data=cleaned_df, scatter=False, color='blue')
 
-plt.xlabel('Massa Rijklaar')
-plt.ylabel('Catalogusprijs')
-plt.title("Relatie tussen Massa Rijklaar en Catalogusprijs van elektrische auto's")
-st.pyplot()
+#plt.xlabel('Massa Rijklaar')
+#plt.ylabel('Catalogusprijs')
+#plt.title("Relatie tussen Massa Rijklaar en Catalogusprijs van elektrische auto's")
+#st.pyplot()
 
 st.divider()
 
 # Maak een histogram met Plotly en toon de exacte count op de bars
-fig = px.histogram(cleaned_df, x='klasse_hybride_elektrisch_voertuig', 
+#fig = px.histogram(cleaned_df, x='klasse_hybride_elektrisch_voertuig', 
                    title='Histogram van Klasse Hybride Elektrisch Voertuig',
                    labels={'klasse_hybride_elektrisch_voertuig': 'Klasse Hybride Elektrisch Voertuig', 'count': 'Aantal Voertuigen'})
 
 # Voeg tekstlabels toe aan de bars met de exacte count
-fig.update_traces(texttemplate='%{y}', textposition='outside')
+#fig.update_traces(texttemplate='%{y}', textposition='outside')
 
 # Stel de hoogte van de plot in
-fig.update_layout(height=600)
+#fig.update_layout(height=600)
 
 # Pas de kleuren van de blokken aan
-fig.update_traces(marker_color=['#1f77b4', '#ff7f0e'])
+#fig.update_traces(marker_color=['#1f77b4', '#ff7f0e'])
 
-st.plotly_chart(fig)
+#st.plotly_chart(fig)
 
 st.divider()
 
