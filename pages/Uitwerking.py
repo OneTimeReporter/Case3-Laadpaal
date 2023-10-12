@@ -54,7 +54,6 @@ opencharge.drop(['AddressInfo.ContactEmail', 'DateLastConfirmed', 'MetadataValue
 opencharge.rename(columns={'AddressInfo.Longitude': 'Longitude', 'AddressInfo.Latitude': 'Latitude', 'AddressInfo.CountryID': 'CountryID'}, inplace=True)
 ''')
 opencharge['AddressInfo.Postcode'] = opencharge['AddressInfo.Postcode'].str.replace(' ', '')
-opencharge.drop(['AddressInfo.ContactEmail', 'DateLastConfirmed', 'MetadataValues', 'AddressInfo.ContactTelephone2', 'AddressInfo.AddressLine2', 'AddressInfo.AccessComments', 'GeneralComments','AddressInfo.ContactTelephone', 'UsageTypeID', 'AddressInfo.RelatedURL', 'OperatorsReference'], axis=1, inplace=True)
 opencharge.rename(columns={'AddressInfo.Longitude': 'Longitude', 'AddressInfo.Latitude': 'Latitude', 'AddressInfo.CountryID': 'CountryID'}, inplace=True)
 
 st.header("Kaart van de data uit opencharge")
