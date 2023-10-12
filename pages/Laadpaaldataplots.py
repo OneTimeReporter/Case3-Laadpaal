@@ -15,8 +15,7 @@ st.write("We beginnen met het inladen van de dataset door het aan te roepen van 
 st.write("De kolom 'Efficiency' wordt aangemaakt door 'Chargetime' te delen met 'ConnectedTime'. ")
 
 st.write(laadpaalDf.dtypes)
-
-laadpaalDf.describe()
+st.write(laadpaalDf.describe())
 
 laadpaalDf.loc[laadpaalDf['Efficiency'] > 100, 'Efficiency'] = 100
 
