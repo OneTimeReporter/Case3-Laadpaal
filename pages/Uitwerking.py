@@ -1,32 +1,12 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[5]:
-
-
 import pandas as pd
 import json
 import streamlit as st
+import plotly.express as px
 inlaad = pd.read_json("https://opendata.rdw.nl/resource/vmju-ygcs.json?$Limit=168630")
 df_ev_2022 = df = pd.DataFrame(inlaad)
-
-
-# In[6]:
-
-
-df_ev_2022
-
-
-# In[7]:
-
+st.write(df_ev_2022)
 
 df_ev_2022 = df_ev_2022.groupby('merk').filter(lambda x: len(x) >= 400)
-
-
-# In[8]:
-
-
-import plotly.express as px
 
 # Aannamen dat de kolom 'Merk' in de DataFrame 'df' zit
 merken = df_ev_2022['merk']
@@ -48,7 +28,7 @@ fig = px.bar(sorted_merk_counts, x='Merk', y='Aantal',
 fig.update_xaxes(tickangle=90, tickmode='array', tickvals=sorted_merk_counts['Merk'])
 
 # Toon het histogram
-fig.show()
+st.plotlychart(st.plotly_chart(fig, use_container_width=True))
 
 
 # Vooral Tesla, Peugeot, Volkswagen en Kia zijn populaire merken onder de elektrische automobilist.
