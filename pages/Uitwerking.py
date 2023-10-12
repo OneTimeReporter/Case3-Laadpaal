@@ -2,6 +2,8 @@ import pandas as pd
 import json
 import streamlit as st
 import plotly.express as px
+import requests
+
 inlaad = pd.read_json("https://opendata.rdw.nl/resource/vmju-ygcs.json?$Limit=168630")
 df_ev_2022 = df = pd.DataFrame(inlaad)
 st.write(df_ev_2022)
@@ -31,20 +33,11 @@ fig.update_xaxes(tickangle=90, tickmode='array', tickvals=sorted_merk_counts['Me
 st.plotly_chart(fig, use_container_width=True)
 
 
-# Vooral Tesla, Peugeot, Volkswagen en Kia zijn populaire merken onder de elektrische automobilist.
+st.write("Vooral Tesla, Peugeot, Volkswagen en Kia zijn populaire merken onder de elektrische automobilist.")
 
-# In[8]:
-
-
+st.code("df_ev_2022['catalogusprijs'].mean()")
 df_ev_2022['catalogusprijs'].mean()
-
-
-# De gemiddelde prijs van een elektrische auto is 52929 euro.
-
-# In[29]:
-
-
-import requests
+st.write("De gemiddelde prijs van een elektrische auto is 52929 euro.")
 
 # API endpoint URL with corrected query parameters
 url = f'https://api.openchargemap.io/v3/poi/?output=json&countrycode=NL&maxresults=7909&compact=true&verbose=false&key=93b912b5-9d70-4b1f-960b-fb80a4c9c017'
@@ -60,11 +53,7 @@ if response.status_code == 200:
 else:
     print(f"Error: {response.status_code}")
     print(response.text)  # Print the error message from the API if available
-
-
-# In[35]:
-
-
+  #######
 opencharge.to_csv("opencharge.csv")
 
 
