@@ -82,7 +82,7 @@ st.write("De dataframe na het opschonen")
 st.write(df)
 st.write("En de aantal nan waardes na het opschonen")
 st.write(df.isna().sum())
-
+st.divider()
 
 st.header("Laadpalen heatmap over heel Nederland")
 st.write("Met behulp van Folium, hebben wij een heatmap geplot van de laadpaaldichtheid over heel Nederland")
