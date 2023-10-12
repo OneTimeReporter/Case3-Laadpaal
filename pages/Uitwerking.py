@@ -183,8 +183,8 @@ st.divider()
 
 # Maak een histogram met Plotly en toon de exacte count op de bars
 #fig = px.histogram(cleaned_df, x='klasse_hybride_elektrisch_voertuig', 
-                   title='Histogram van Klasse Hybride Elektrisch Voertuig',
-                   labels={'klasse_hybride_elektrisch_voertuig': 'Klasse Hybride Elektrisch Voertuig', 'count': 'Aantal Voertuigen'})
+#                   title='Histogram van Klasse Hybride Elektrisch Voertuig',
+#                   labels={'klasse_hybride_elektrisch_voertuig': 'Klasse Hybride Elektrisch Voertuig', 'count': 'Aantal Voertuigen'})
 
 # Voeg tekstlabels toe aan de bars met de exacte count
 #fig.update_traces(texttemplate='%{y}', textposition='outside')
