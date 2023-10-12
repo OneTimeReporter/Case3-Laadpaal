@@ -74,15 +74,10 @@ for index, row in opencharge.iterrows():
 # Display the map
 st.map = st_folium(m, width=1000)
 
-client = Socrata("opendata.rdw.nl", None)
-results = client.get("w4rt-e856", limit=450)
-client2 = Socrata("opendata.rdw.nl", None)
-results2 = client2.get("vsxf-rq7p", limit=16000)
-
-df_results = pd.DataFrame(results)
-st.write(df_results)
-df_results_2 = pd.DataFrame(results2)
-st.write(df_results_2)
+#df_results = pd.DataFrame(results)
+#st.write(df_results)
+#df_results_2 = pd.DataFrame(results2)
+#st.write(df_results_2)
 
 # Voer de merge-operatie uit op basis van de kolom "kenteken"
 st.write("De initiele dataset wordt gejoint met brandstoftype data behaalt van de website van de rdw.")
@@ -98,19 +93,19 @@ merged_df = pd.merge(df_ev_2022, df_results_2, on='kenteken', how='inner')
 # Als je alle rijen uit beide DataFrames wilt behouden, zelfs als ze geen overeenkomstige kentekens hebben, gebruik dan 'outer' in plaats van 'inner'.
 
 st.write("Toon het samengevoegde DataFrame")
-st.write(merged_df)
+#st.write(merged_df)
 st.write("Toon het aantal hybride auto's")
 st.write(merged_df['klasse_hybride_elektrisch_voertuig'].value_counts())
 st.write("Er zijn 266 hybride autos")
 st.write("Toont de waardes in brandstof omschrijving, en de aantal nan waardes in de dataframe")
 st.write(merged_df['brandstof_omschrijving'].value_counts())
 st.write(merged_df.isna().sum())
-#####
+
 #Hier ben ik een nieuwe dataset aan het maken met alleen nuttige inhoud
 #De zuinigheidsclassificatie heb ik helaas niet meekunnen nemen
 
 merged_clean = merged_df[['merk', 'handelsbenaming', 'voertuigsoort', 'inrichting', 'massa_rijklaar', 'catalogusprijs', 'lengte', 'breedte', 'klasse_hybride_elektrisch_voertuig', 'brandstof_omschrijving']]
-st.write(merged_clean)
+#st.write(merged_clean)
 
 # Annamen dat merged_clean je DataFrame is
 # Vervang null-waarden in de kolom klasse_hybride_elektrisch_voertuig door 'Geen hybride'
@@ -151,29 +146,24 @@ st.write(missing_lengte_rows)
 # Groepeer de gegevens op basis van 'handelsbenaming' en 'voertuigsoort', en vul de ontbrekende waarden in 'lengte' op
 merged_clean['lengte'] = merged_clean.groupby(['handelsbenaming', 'voertuigsoort'])['lengte'].transform(lambda x: x.fillna(x.mean()))
 merged_clean['breedte'] = merged_clean.groupby(['handelsbenaming', 'voertuigsoort'])['breedte'].transform(lambda x: x.fillna(x.mean()))
-merged_clean.isna().sum()
+st.write(merged_clean.isna().sum())
 
 missing_lengte2_rows = merged_clean[merged_clean['lengte'].isnull()]
 
 # Toon de rijen met ontbrekende waarden in de kolom 'uitvoering'
-missing_lengte2_rows
-
+st.write(missing_lengte2_rows)
 
 cleaned_df = merged_clean.dropna()
-cleaned_df
-
+#cleaned_df
 
 # Calculate the z-scores for catalogusprijs
 z_scores = np.abs((cleaned_df['catalogusprijs'] - cleaned_df['catalogusprijs'].mean()) / cleaned_df['catalogusprijs'].std())
-
 # Identify the outliers
 outliers = cleaned_df[z_scores > 3]
-
 # Remove the outliers
 cleaned_df = cleaned_df[z_scores <= 3]
-
 # Show the updated DataFrame
-cleaned_df
+#cleaned_df
 
 
 # Maak een scatter plot om de relatie tussen massa_rijklaar en catalogusprijs te verkennen
@@ -235,13 +225,6 @@ def clean_usage_cost(value):
 opencharge["UsageCost"] = opencharge["UsageCost"].apply(clean_usage_cost)
 
 opencharge["UsageCost"] = opencharge["UsageCost"].astype(float)
-for value in opencharge["UsageCost"]:
-    print(value)
-opencharge["UsageCost"].unique()
-df_ev_2022['massa_rijklaar'].mean()
-
-
-# De gemiddelde massa van een elektrische auto is 1903 kg.
 
 #De merken grouperen met de gemiddelde massa rijklaar van ieder merk.
 df_merk_mass = df_ev_2022.groupby('merk')['massa_rijklaar'].mean().reset_index()
