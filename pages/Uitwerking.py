@@ -3,6 +3,10 @@ import json
 import streamlit as st
 import plotly.express as px
 import requests
+import folium
+from folium.plugins import HeatMap
+from streamlit_folium import st_folium
+from sodapy import Socrata
 
 inlaad = pd.read_json("https://opendata.rdw.nl/resource/vmju-ygcs.json?$Limit=168630")
 df_ev_2022 = df = pd.DataFrame(inlaad)
@@ -31,83 +35,31 @@ fig.update_xaxes(tickangle=90, tickmode='array', tickvals=sorted_merk_counts['Me
 
 # Toon het histogram
 st.plotly_chart(fig, use_container_width=True)
-
-
+st.divider()
 st.write("Vooral Tesla, Peugeot, Volkswagen en Kia zijn populaire merken onder de elektrische automobilist.")
 
 st.code("df_ev_2022['catalogusprijs'].mean()")
 df_ev_2022['catalogusprijs'].mean()
 st.write("De gemiddelde prijs van een elektrische auto is 52929 euro.")
+st.divider()
 
-# API endpoint URL with corrected query parameters
-url = f'https://api.openchargemap.io/v3/poi/?output=json&countrycode=NL&maxresults=7909&compact=true&verbose=false&key=93b912b5-9d70-4b1f-960b-fb80a4c9c017'
+inladen = pd.read_csv(pages/opencharge.csv)
+opencharge = pd.DataFrame(inladen)
 
-# Make a GET request to retrieve charging station data
-response = requests.get(url)
-
-# Check for successful response
-if response.status_code == 200:
-    charging_stations = response.json()
-    opencharge = pd.json_normalize(charging_stations)
-    # Process the charging station data as needed
-else:
-    print(f"Error: {response.status_code}")
-    print(response.text)  # Print the error message from the API if available
-  #######
-opencharge.to_csv("opencharge.csv")
-
-
-# In[36]:
-
-
-opencharge.index
-
-
-# In[37]:
-
-
+st.write(opencharge.index)
+st.write("Data wordt opgeschoont, onnodige kolommen worden gedropt, en kolommen worden hernoemt voor makkelijkere leesbaarheid en bruikbaarheid.")
+st.code(''' 
 opencharge['AddressInfo.Postcode'] = opencharge['AddressInfo.Postcode'].str.replace(' ', '')
-
-
-# In[35]:
-
-
 opencharge.drop(['AddressInfo.ContactEmail', 'DateLastConfirmed', 'MetadataValues', 'AddressInfo.ContactTelephone2', 'AddressInfo.AddressLine2', 'AddressInfo.AccessComments', 'GeneralComments','AddressInfo.ContactTelephone', 'UsageTypeID', 'AddressInfo.RelatedURL', 'OperatorsReference'], axis=1, inplace=True)
-
-
-# In[76]:
-
-
-opencharge.isna().sum().sort_values(ascending=True)
-
-
-# In[44]:
-
-
+opencharge.rename(columns={'AddressInfo.Longitude': 'Longitude', 'AddressInfo.Latitude': 'Latitude', 'AddressInfo.CountryID': 'CountryID'}, inplace=True)
+''')
+opencharge['AddressInfo.Postcode'] = opencharge['AddressInfo.Postcode'].str.replace(' ', '')
+opencharge.drop(['AddressInfo.ContactEmail', 'DateLastConfirmed', 'MetadataValues', 'AddressInfo.ContactTelephone2', 'AddressInfo.AddressLine2', 'AddressInfo.AccessComments', 'GeneralComments','AddressInfo.ContactTelephone', 'UsageTypeID', 'AddressInfo.RelatedURL', 'OperatorsReference'], axis=1, inplace=True)
 opencharge.rename(columns={'AddressInfo.Longitude': 'Longitude', 'AddressInfo.Latitude': 'Latitude', 'AddressInfo.CountryID': 'CountryID'}, inplace=True)
 
+st.header("Kaart van de data uit opencharge")
 
-# In[53]:
-
-
-opencharge['AddressInfo.StateOrProvince'].isnull().sum()
-
-
-# In[ ]:
-
-
-opencharge['AddressInfo.Postcode'].isnull().sum()
-
-
-# ## Kaart van de data uit opencharge
-# 
-# Hieronder wordt een kaart weergegeven met de locaties van de oplaadstations uit de opencharge dataset.
-
-# In[35]:
-
-
-# Import the necessary libraries
-import folium
+st.write("Hieronder wordt een kaart weergegeven met de locaties van de oplaadstations uit de opencharge dataset.")
 
 # Create a map object
 m = folium.Map(location=[52.379189, 4.899431], zoom_start=10)
@@ -117,126 +69,58 @@ for index, row in opencharge.iterrows():
     folium.Marker([row['AddressInfo.Latitude'], row['AddressInfo.Longitude']]).add_to(m)
 
 # Display the map
-m
-
-
-# In[11]:
-
-
-get_ipython().system('pip install sodapy')
-
-from sodapy import Socrata
+st.map = st_folium(m, width=1000)
 
 client = Socrata("opendata.rdw.nl", None)
 results = client.get("w4rt-e856", limit=450000)
 client2 = Socrata("opendata.rdw.nl", None)
 results2 = client2.get("vsxf-rq7p", limit=16000000)
 
-
-# In[15]:
-
-
 df_results = pd.DataFrame(results)
-df_results
-
-
-# In[16]:
-
-
+st.write(df_results)
 df_results_2 = pd.DataFrame(results2)
-df_results_2
-
-
-# In[18]:
-
-
-df_results.to_csv("autosdata.csv")
-df_results_2.to_csv("brandstoftypedata.csv")
-
-
-# In[22]:
-
-
-import pandas as pd
-
-# Lees gegevens vanuit een CSV-bestand en plaats deze in een DataFrame
-df_results_2 = pd.read_csv('brandstoftypedata.csv')
-df_results = pd.read_csv('autosdata.csv')
-
-
-# In[23]:
-
-
-# Importeer de pandas-bibliotheek als dat nog niet is gedaan
-import pandas as pd
+st.write(df_results_2)
 
 # Voer de merge-operatie uit op basis van de kolom "kenteken"
+st.write("De initiele dataset wordt gejoint met brandstoftype data behaalt van de website van de rdw.")
+st.code('''
+client2 = Socrata("opendata.rdw.nl", None)
+results2 = client2.get("vsxf-rq7p", limit=16000000)
+df_results_2 = pd.DataFrame(results2)
+st.write(df_results_2)
+merged_df = pd.merge(df_ev_2022, df_results_2, on='kenteken', how='inner')
+''')
+
 merged_df = pd.merge(df_ev_2022, df_results_2, on='kenteken', how='inner')
 
 # 'inner' betekent dat alleen de gemeenschappelijke rijen worden opgenomen
 # Als je alle rijen uit beide DataFrames wilt behouden, zelfs als ze geen overeenkomstige kentekens hebben, gebruik dan 'outer' in plaats van 'inner'.
 
-# Toon het samengevoegde DataFrame
-merged_df
-
-
-# In[24]:
-
-
-merged_df['klasse_hybride_elektrisch_voertuig'].value_counts()
-
-
-# Er zijn 266 hybride autos
-
-# In[25]:
-
-
-merged_df['brandstof_omschrijving'].value_counts()
-
-
-# In[26]:
-
-
-merged_df.isna().sum()
-
-
-# In[27]:
-
-
+st.write("Toon het samengevoegde DataFrame")
+st.write(merged_df)
+st.write("Toon het aantal hybride auto's")
+st.write(merged_df['klasse_hybride_elektrisch_voertuig'].value_counts())
+st.write("Er zijn 266 hybride autos")
+st.write("Toont de waardes in brandstof omschrijving, en de aantal nan waardes in de dataframe")
+st.write(merged_df['brandstof_omschrijving'].value_counts())
+st.write(merged_df.isna().sum())
+#####
 #Hier ben ik een nieuwe dataset aan het maken met alleen nuttige inhoud
 #De zuinigheidsclassificatie heb ik helaas niet meekunnen nemen
 
 merged_clean = merged_df[['merk', 'handelsbenaming', 'voertuigsoort', 'inrichting', 'massa_rijklaar', 'catalogusprijs', 'lengte', 'breedte', 'klasse_hybride_elektrisch_voertuig', 'brandstof_omschrijving']]
-merged_clean
-
-
-# In[28]:
-
-
-import pandas as pd
+st.write(merged_clean)
 
 # Annamen dat merged_clean je DataFrame is
 # Vervang null-waarden in de kolom klasse_hybride_elektrisch_voertuig door 'Geen hybride'
 merged_clean['klasse_hybride_elektrisch_voertuig'].fillna('Geen hybride', inplace=True)
 
-
-# In[29]:
-
-
-merged_clean.isna().sum()
-
-
-# In[30]:
-
+st.write(merged_clean.isna().sum())
 
 missing_uitvoering_rows = merged_clean[merged_clean['catalogusprijs'].isnull()]
 
 # Toon de rijen met ontbrekende waarden in de kolom 'uitvoering'
-missing_uitvoering_rows
-
-
-# In[32]:
-
+st.write(missing_uitvoering_rows)
 
 #tesla model 3 48836
 #eqv is 85670
@@ -244,7 +128,7 @@ missing_uitvoering_rows
 #model x is 130499
 #2008 is 40946
 #ix m60 is 144830
-# Filter de rijen met de opgegeven voorwaarden
+# ilter de rijen met de opgegeven voorwaarden
 filtered_rows = merged_clean.loc[(merged_clean['handelsbenaming'] == 'IX M60') & (merged_clean['inrichting'] == 'stationwagen')]
 
 # Toon de rijen die aan beide voorwaarden voldoen
@@ -256,20 +140,12 @@ merged_clean.at[99228, 'catalogusprijs'] = 85670
 merged_clean.at[101810, 'catalogusprijs'] = 48836
 merged_clean.at[121665, 'catalogusprijs'] = 56001
 merged_clean.at[141444, 'catalogusprijs'] = 130499
-merged_clean.isna().sum()
-
-
-# In[33]:
-
+st.write(merged_clean.isna().sum())
 
 missing_lengte_rows = merged_clean[merged_clean['lengte'].isnull()]
 
 # Toon de rijen met ontbrekende waarden in de kolom 'uitvoering'
-missing_lengte_rows
-
-
-# In[34]:
-
+st.write(missing_lengte_rows)
 
 # Groepeer de gegevens op basis van 'handelsbenaming' en 'voertuigsoort', en vul de ontbrekende waarden in 'lengte' op
 merged_clean['lengte'] = merged_clean.groupby(['handelsbenaming', 'voertuigsoort'])['lengte'].transform(lambda x: x.fillna(x.mean()))
