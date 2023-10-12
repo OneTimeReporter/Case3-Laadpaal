@@ -18,9 +18,9 @@ st.image(laadpaalheader, caption="Vanaf 2030 wil de gemeente Amsterdam alle benz
 
 st.write('''
 
-Vanaf 2030 mogen nieuwe auto's in Nederland alleen volledig elektrisch zijn. Een ambitieuze doel of juist een heel makkelijk doel om te bereiken, het antwoord hangt af van aan wie je het vraagt.</br>
-Het doel van deze dataverkenning is om een inzicht te maken op de huidige situatie in Amsterdam in het gebied van electrisch rijden.</br>
-In deze Streamlit blog nemen wij een kijkje naar de laadpalen in Amsterdan, wat data verzameld door deze laadpalen, en data van de RDW over elektrische auto's in Nederland.</br>
+Vanaf 2030 mogen nieuwe auto's in Nederland alleen volledig elektrisch zijn. Een ambitieuze doel of juist een heel makkelijk doel om te bereiken, het antwoord hangt af van aan wie je het vraagt. </br>
+Het doel van deze dataverkenning is om een inzicht te maken op de huidige situatie in Amsterdam in het gebied van electrisch rijden. </br>
+In deze Streamlit blog nemen wij een kijkje naar de laadpalen in Amsterdan, wat data verzameld door deze laadpalen, en data van de RDW over elektrische auto's in Nederland. </br>
 ''')
 
 
