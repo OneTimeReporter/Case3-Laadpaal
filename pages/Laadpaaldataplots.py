@@ -32,7 +32,7 @@ st.write(laadpaalDf)
 st.divider()
 
 plt.hist(laadpaalDf['ChargeTime'], bins=10, range=(0, 10), color='skyblue', edgecolor='black', label = "Charge Time")
-plt.hist(laadpaalDf['ConnectedTime'], bins=10, range=(0, 10), color='skyblue', edgecolor='black', label = "Connected Time")
+plt.hist(laadpaalDf['ConnectedTime'], bins=10, range=(0, 10), color='orange', edgecolor='black', label = "Connected Time")
 plt.xlabel('Tijd (Uren)')
 plt.ylabel('Waarnemingen')
 plt.legend(loc='upper right')
