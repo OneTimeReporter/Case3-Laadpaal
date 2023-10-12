@@ -115,4 +115,4 @@ heatmap_layer = HeatMap(coordinates, radius=15)
 heatmap_layer.add_to(map_df)
 
 # Display the map in Streamlit
-st.write(map_df._repr_html_(), unsafe_allow_html=True)
+st.map(map_df._repr_html_(), unsafe_allow_html=True)
