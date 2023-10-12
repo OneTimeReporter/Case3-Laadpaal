@@ -10,18 +10,20 @@ inladen = pd.read_csv('pages/laadpaaldata.csv')
 laadpaalDf = pd.DataFrame(inladen)
 laadpaalDf['Efficiency'] = laadpaalDf['ChargeTime'] / laadpaalDf['ConnectedTime'] * 100
 laadpaalDf = laadpaalDf[laadpaalDf['ChargeTime'] >= 0]
+laadpaalDf.loc[laadpaalDf['Efficiency'] > 100, 'Efficiency'] = 100
+laadpaalDf['Started'] = pd.to_datetime(laadpaalDf['Started'], errors='coerce', format='%Y-%m-%d %H:%M:%S')
+laadpaalDf['Ended'] = pd.to_datetime(laadpaalDf['Ended'], errors='coerce', format='%Y-%m-%d %H:%M:%S')
 
 st.write("We beginnen met het inladen van de dataset door het aan te roepen van 'laadpaaldata.csv'. ")
 st.write("De kolom 'Efficiency' wordt aangemaakt door 'Chargetime' te delen met 'ConnectedTime'. ")
 
+st.write("De datatypes en algemene informatie van de dataset. De tijdskolommen zijn in uren, en de eenheid van energie gebruikt is kWh.")
 st.write(laadpaalDf.dtypes)
+st.divider()
 st.write(laadpaalDf.describe())
+st.divider()
+st.write(laadpaalDf)
 
-laadpaalDf.loc[laadpaalDf['Efficiency'] > 100, 'Efficiency'] = 100
-
-laadpaalDf
-
-laadpaalDf['Started'] = pd.to_datetime(laadpaalDf['Started'], errors='coerce', format='%Y-%m-%d %H:%M:%S')
 
 plt.hist(laadpaalDf['ChargeTime'], bins=10, range=(0, 10), color='skyblue', edgecolor='black')
 plt.xlabel('Laadtijd (Uren)')
