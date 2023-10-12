@@ -83,18 +83,6 @@ st.write(df)
 st.write("En de aantal nan waardes na het opschonen")
 st.write(df.isna().sum())
 
-st.write("Aantal kolommen worden hernoemt om leesbaarheid en bruikbaarheid te verbeteren")
-
-st.code('''
-df.rename(columns={"AddressInfo.Town": "Town"}, inplace=True)
-df.rename(columns={"AddressInfo.StateOrProvince": "Province"}, inplace=True)
-df.rename(columns={"AddressInfo.Postcode": "postcode"}, inplace=True))
-''',language="Python")
-st.divider()
-df.rename(columns={"AddressInfo.Town": "Town"}, inplace=True)
-df.rename(columns={"AddressInfo.StateOrProvince": "Province"}, inplace=True)
-df.rename(columns={"AddressInfo.Postcode": "postcode"}, inplace=True)
-
 
 st.header("Laadpalen heatmap over heel Nederland")
 st.write("Met behulp van Folium, hebben wij een heatmap geplot van de laadpaaldichtheid over heel Nederland")
