@@ -1,59 +1,29 @@
 import pandas as pd
 import plotly.express as px
 import datetime as dt
+import matplotlib.pyplot as plt
+import numpy as np
 
-laadpaalDf = pd.read_csv('laadpaaldata.csv')
+laadpaalDf = pd.read_csv('pages/laadpaaldata.csv')
 laadpaalDf['Efficiency'] = laadpaalDf['ChargeTime'] / laadpaalDf['ConnectedTime'] * 100
 laadpaalDf = laadpaalDf[laadpaalDf['ChargeTime'] >= 0]
 
-
-# In[11]:
-
-
 laadpaalDf.dtypes
-
-
-# In[4]:
-
 
 laadpaalDf.describe()
 
-
-# In[5]:
-
-
 laadpaalDf.loc[laadpaalDf['Efficiency'] > 100, 'Efficiency'] = 100
-
-
-# In[6]:
-
 
 laadpaalDf
 
-
-# In[7]:
-
-
 laadpaalDf['Started'] = pd.to_datetime(laadpaalDf['Started'], errors='coerce', format='%Y-%m-%d %H:%M:%S')
-laadpaalDf['Ended'] = pd.to_datetime(laadpaalDf['Ended'], errors='coerce', format='%Y-%m-%d %H:%M:%S')
-
-
-# In[13]:
-
-
-import matplotlib.pyplot as plt
 
 plt.hist(laadpaalDf['ChargeTime'], bins=10, range=(0, 10), color='skyblue', edgecolor='black')
 plt.xlabel('Laadtijd (Uren)')
 plt.ylabel('Waarnemingen')
 plt.title('Verdeling van Laadtijd')
 
-
 plt.show()
-
-
-# In[16]:
-
 
 # Calculate the z-score for the ConnectedTime column
 z_scores = (laadpaalDf['ConnectedTime'] - laadpaalDf['ConnectedTime'].mean()) / laadpaalDf['ConnectedTime'].std()
@@ -64,19 +34,9 @@ outlier_threshold = 3
 # Drop rows where the z-score exceeds the threshold
 laadpaalDf = laadpaalDf[z_scores <= outlier_threshold]
 
-
-# In[25]:
-
-
 # Drop rows where the Efficiency column is equal to 0
 laadpaalDf = laadpaalDf[laadpaalDf['Efficiency'] != 0]
 
-
-# In[38]:
-
-
-import numpy as np
-import matplotlib.pyplot as plt
 
 # Sort the data by ConnectedTime
 sorted_data = laadpaalDf.sort_values('ConnectedTime')
@@ -98,13 +58,6 @@ plt.plot(sorted_data['ConnectedTime'], trend_line(sorted_data['ConnectedTime']),
 plt.ylim(0)  # Set the Y axis lower limit to 0
 
 plt.show()
-
-
-# In[40]:
-
-
-import numpy as np
-import matplotlib.pyplot as plt
 
 # Sort the data by ConnectedTime
 sorted_data = laadpaalDf.sort_values('ConnectedTime')
