@@ -89,7 +89,7 @@ st.write("Met behulp van Folium, hebben wij een heatmap geplot van de laadpaaldi
 st.write("Zoals te zien is, zitten de meeste laadpalen in de Randstad.")
 st.write("Als Nederland voor 2030 volledig elektrisch wilt zijn, zullen er meer laadpalen moeten geinstalleerd worden in de lichter gekleurde gebieden om de minder gepopuleerde delen van Nederland te servicen.")
 
-map_df = folium.Map(location=[52.3702, 4.8952], zoom_start=8)
+map_df = folium.Map(location=[52.3702, 4.8952], zoom_start=10)
 
 # Create a list of coordinates from the DataFrame
 coordinates = df[['AddressInfo.Latitude', 'AddressInfo.Longitude']].values
