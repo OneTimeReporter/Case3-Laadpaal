@@ -7,6 +7,10 @@ import folium
 from folium.plugins import HeatMap
 from streamlit_folium import st_folium
 from sodapy import Socrata
+import seaborn as sns
+import matplotlib.pyplot as plt
+import numpy as np
+import re
 
 inlaad = pd.read_json("https://opendata.rdw.nl/resource/vmju-ygcs.json?$Limit=168630")
 df_ev_2022 = df = pd.DataFrame(inlaad)
@@ -65,7 +69,7 @@ m = folium.Map(location=[52.379189, 4.899431], zoom_start=10)
 
 # Add markers for each charging station
 for index, row in opencharge.iterrows():
-    folium.Marker([row['AddressInfo.Latitude'], row['AddressInfo.Longitude']]).add_to(m)
+    folium.Marker([row['Latitude'], row['Longitude']]).add_to(m)
 
 # Display the map
 st.map = st_folium(m, width=1000)
@@ -151,27 +155,15 @@ merged_clean['lengte'] = merged_clean.groupby(['handelsbenaming', 'voertuigsoort
 merged_clean['breedte'] = merged_clean.groupby(['handelsbenaming', 'voertuigsoort'])['breedte'].transform(lambda x: x.fillna(x.mean()))
 merged_clean.isna().sum()
 
-
-# In[21]:
-
-
 missing_lengte2_rows = merged_clean[merged_clean['lengte'].isnull()]
 
 # Toon de rijen met ontbrekende waarden in de kolom 'uitvoering'
 missing_lengte2_rows
 
 
-# In[37]:
-
-
 cleaned_df = merged_clean.dropna()
 cleaned_df
 
-
-# In[124]:
-
-
-import numpy as np
 
 # Calculate the z-scores for catalogusprijs
 z_scores = np.abs((cleaned_df['catalogusprijs'] - cleaned_df['catalogusprijs'].mean()) / cleaned_df['catalogusprijs'].std())
@@ -186,13 +178,6 @@ cleaned_df = cleaned_df[z_scores <= 3]
 cleaned_df
 
 
-# In[151]:
-
-
-import seaborn as sns
-import matplotlib.pyplot as plt
-import numpy as np
-
 # Maak een scatter plot om de relatie tussen massa_rijklaar en catalogusprijs te verkennen
 plt.figure(figsize=(10, 6))
 sns.scatterplot(x='massa_rijklaar', y='catalogusprijs', hue='inrichting', alpha=0.5, data=cleaned_df)
@@ -204,25 +189,9 @@ sns.regplot(x='massa_rijklaar', y='catalogusprijs', data=cleaned_df, scatter=Fal
 plt.xlabel('Massa Rijklaar')
 plt.ylabel('Catalogusprijs')
 plt.title("Relatie tussen Massa Rijklaar en Catalogusprijs van elektrische auto's")
-plt.show()
+st.pyplot()
 
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[90]:
-
-
-import plotly.express as px
+st.divider()
 
 # Maak een histogram met Plotly en toon de exacte count op de bars
 fig = px.histogram(cleaned_df, x='klasse_hybride_elektrisch_voertuig', 
@@ -238,21 +207,9 @@ fig.update_layout(height=600)
 # Pas de kleuren van de blokken aan
 fig.update_traces(marker_color=['#1f77b4', '#ff7f0e'])
 
-fig.show()
+st.plotly_chart(fig)
 
-
-# In[55]:
-
-
-for value in opencharge["UsageCost"]:
-    print(value)
-
-
-# In[43]:
-
-
-import re
-import numpy as np
+st.divider()
 
 # Define a custom function to clean the "UsageCost" column
 def clean_usage_cost(value):
@@ -282,26 +239,11 @@ opencharge["UsageCost"] = opencharge["UsageCost"].apply(clean_usage_cost)
 opencharge["UsageCost"] = opencharge["UsageCost"].astype(float)
 for value in opencharge["UsageCost"]:
     print(value)
-
-
-# In[56]:
-
-
 opencharge["UsageCost"].unique()
-
-
-# In[42]:
-
-
 df_ev_2022['massa_rijklaar'].mean()
 
 
 # De gemiddelde massa van een elektrische auto is 1903 kg.
-
-# In[114]:
-
-
-import plotly.express as px
 
 #De merken grouperen met de gemiddelde massa rijklaar van ieder merk.
 df_merk_mass = df_ev_2022.groupby('merk')['massa_rijklaar'].mean().reset_index()
@@ -322,13 +264,8 @@ fig = px.bar(df_merk_mass, x='merk', y='massa_rijklaar',
 
 #Het gemiddelde van alle merken kleuren.
 fig.update_traces(marker_color='red', selector=dict(name='GEMIDDELD'))
-fig.show()
-
-
-# In[115]:
-
-
-import plotly.express as px
+st.plotly_chart(fig)
+st.divider()
 
 #De merken grouperen met de gemiddelde catalogusprijs van ieder merk.
 df_merk_mass = df_ev_2022.groupby('merk')['catalogusprijs'].mean().reset_index()
@@ -349,5 +286,5 @@ fig = px.bar(df_merk_mass, x='merk', y='catalogusprijs',
 
 #Het gemiddelde van alle merken kleuren.
 fig.update_traces(marker_color='red', selector=dict(name='GEMIDDELD'))
-fig.show()
+st.plotly_chart(fig)
 
